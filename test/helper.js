@@ -7,7 +7,7 @@ const Fastify = require('fastify')
 const fp = require('fastify-plugin')
 const App = require('../app')
 
-const { beforeEach, tearDown } = require('tap')
+const { beforeEach, teardown } = require('tap')
 
 let client
 
@@ -15,7 +15,7 @@ beforeEach(async function () {
 
 })
 
-tearDown(async function () {
+teardown(async function () {
   if (client) {
     await client.close()
     client = null
@@ -42,7 +42,7 @@ function build (t) {
   app.register(fp(App), config())
 
   // tear down our app after we are done
-  t.tearDown(app.close.bind(app))
+  t.teardown(app.close.bind(app))
 
   return app
 }
