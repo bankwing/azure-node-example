@@ -1,59 +1,16 @@
-name: CI
+name: Dispatch
 
 on:
   workflow_dispatch:
 
 env:
-  AZURE_WEBAPP_NAME: node-echo    # set this to your application's name
-  AZURE_WEBAPP_PACKAGE_PATH: '.'      # set this to the path to your web app project, defaults to the repository root
-  NODE_VERSION: '16.x'                # set this to the node version to use
   REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository }}
+  IMAGE_NAME: ms-echo
 
 jobs:
-  sast:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v3
-
-    - name: Set up Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: ${{ env.NODE_VERSION }}
-        cache: 'npm'
-
-    # Initializes the CodeQL tools for scanning.
-    - name: Initialize CodeQL
-      uses: github/codeql-action/init@v2
-      with:
-          languages: javascript
-      
-    - name: Download dependencies
-      run: npm i 
-    
-    - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@v2
-
-  unittest:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v3
-
-    - name: Set up Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: ${{ env.NODE_VERSION }}
-        cache: 'npm'
-    
-    - name: Download dependencies
-      run: npm i 
-
-    - name: Run Test
-      run: npm run test 
-
   build-and-push-image:
     runs-on: ubuntu-latest
-    needs: [sast, unittest]
+    needs: ["SAST", "UnitTests"]
     permissions:
       contents: read
       packages: write
@@ -119,18 +76,18 @@ jobs:
   # dispatch:
   #   runs-on: ubuntu-latest
   #   needs: [sast, unittest]
-  # Dispatch:
-  #   needs: [sast, unittest]
-  #   runs-on: ubuntu-latest
-  #   steps:  
-  #   - name: Repository Dispatch
-  #     uses: peter-evans/repository-dispatch@v2
+  Dispatch:
+    needs: [build-and-push-image]
+    runs-on: ubuntu-latest
+    steps:  
+    - name: Repository Dispatch
+      uses: peter-evans/repository-dispatch@v2
 
-  #     with:
-  #       token: ${{ secrets.REPO_ACCESS_TOKEN }}
-  #       repository: bankwing/azure-java-demo-pipeline
-  #       event-type: my-event
-  #       client-payload: '{"ref": "${{ github.ref }}", "sha": "${{ github.sha }}"}'
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        repository: bankwing/azure-cd-node-webapp-container
+        event-type: my-event
+        client-payload: '{"imagename": "${{ env.IMAGE_NAME }}", "imagetag": "${{ steps.meta.outputs.tags }}"}'
 
   # call-deploy-workflow-passing-data:
   #   uses: https://github.com/bankwing/azure-java-demo-pipeline@main

@@ -1,0 +1,33 @@
+name: SAST
+
+on:
+  workflow_dispatch:
+
+env:
+  AZURE_WEBAPP_NAME: node-echo    # set this to your application's name
+  AZURE_WEBAPP_PACKAGE_PATH: '.'      # set this to the path to your web app project, defaults to the repository root
+  NODE_VERSION: '16.x'                # set this to the node version to use
+
+jobs:
+  SAST:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+        cache: 'npm'
+
+    # Initializes the CodeQL tools for scanning.
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@v2
+      with:
+          languages: javascript
+      
+    - name: Download dependencies
+      run: npm i 
+    
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v2
