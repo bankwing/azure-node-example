@@ -99,7 +99,7 @@ jobs:
           token: ${{ secrets.REPO_ACCESS_TOKEN }}
           repository: bankwing/azure-cd-node-webapp-container
           event-type: my-event
-          client-payload: '{"appname": "${{ env.AZURE_WEBAPP_NAME }}" ,"imagename": "${{ env.IMAGE_NAME }}", "imagetag": "${{ steps.meta.outputs.tags }}"}'
+          client-payload: '{"appname": "${{ env.AZURE_WEBAPP_NAME }}" ,"imagename": "${{ env.IMAGE_NAME }}", "imagetag": "${{ steps.meta.outputs.labels }}"}'
   # sca:
   #   runs-on: ubuntu-latest
   #   steps:
