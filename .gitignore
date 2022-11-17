@@ -59,7 +59,7 @@ profile*
 
 # lock files
 yarn.lock
-package-lock.json
+# package-lock.json
 
 # generated code
 examples/typescript-server.js

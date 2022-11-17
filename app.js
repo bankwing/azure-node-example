@@ -7,9 +7,6 @@ module.exports = function (fastify, opts, next) {
   fastify
     .register(require('fastify-cors'))
     .register(require('fastify-helmet'))
-    .register(require('@fastify/jwt'), {
-      secret: opts.auth ? opts.auth.secret : process.env.SECRET || 'youshouldspecifyalongsecret'
-    })
 
   // Do not touch the following lines
 
