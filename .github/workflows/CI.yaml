@@ -49,6 +49,37 @@ jobs:
     - name: Run Test
       run: npm run test
       
+  sca:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+        cache: 'npm'
+
+    - name: Download dependencies
+      run: npm i 
+
+    - name: Depcheck
+      uses: dependency-check/Dependency-Check_Action@main
+      id: Depcheck
+      with:
+        project: 'node-echo'
+        path: '.'
+        format: 'HTML'
+        out: 'reports' # this is the default, no need to specify unless you wish to override it
+        args: >
+          --failOnCVSS 7
+          --enableRetired
+    - name: Upload Test results
+      uses: actions/upload-artifact@master
+      with:
+         name: Depcheck report
+         path: ${{github.workspace}}/reports
+
   # dispatch:
   #   runs-on: ubuntu-latest
   #   needs: [sast, unittest]
