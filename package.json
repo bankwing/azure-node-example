@@ -1,7 +1,7 @@
 {
-  "name": "fastify-example-todo",
+  "name": "fastify-example-echo",
   "version": "0.0.1",
-  "description": "A todo-app (API only) example in Fastify",
+  "description": "A echo-app (API only) example in Fastify",
   "main": "app.js",
   "directories": {
     "test": "test"
@@ -14,19 +14,22 @@
     "lint": "standard --fix | snazzy"
   },
   "keywords": [],
-  "author": "Cemre Mengu <cemremengu@gmail.com>",
+  "author": "BankwinG <bankwing@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "fastify": "^2.0.0",
+    "@fastify/autoload": "^4.0.0",
+    "@fastify/cors": "^8.1.0",
+    "@fastify/helmet": "^10.0.0",
+    "fastify-plugin": "^4.2.1",
     "fastify-autoload": "^0.6.0",
-    "fastify-cli": "^0.27.0",
-    "fastify-cors": "^3.0.3",
-    "fastify-helmet": "^3.0.0",
-    "fastify-plugin": "^1.4.0"
+    "fastify": "^4.5.3",
+    "close-with-grace": "1.1.0",
+    "dotenv": "^16.0.0"
   },
   "devDependencies": {
-    "snazzy": "^8.0.0",
+    "snazzy": "^9.0.0",
     "standard": "^12.0.1",
-    "tap": "^12.1.1"
+    "tap": "^16.3.2",
+    "fastify-cli": "^5.4.1"
   }
 }

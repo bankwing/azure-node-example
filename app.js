@@ -5,8 +5,8 @@ const AutoLoad = require('fastify-autoload')
 
 module.exports = function (fastify, opts, next) {
   fastify
-    .register(require('fastify-cors'))
-    .register(require('fastify-helmet'))
+    .register(require('@fastify/cors'))
+    .register(require('@fastify/helmet'))
 
   // Do not touch the following lines
 
