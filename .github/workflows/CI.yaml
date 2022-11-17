@@ -4,9 +4,9 @@ on:
   workflow_dispatch:
 
 env:
-  AZURE_WEBAPP_NAME: ms-echo    # set this to your application's name
-  AZURE_WEBAPP_PACKAGE_PATH: '.'      # set this to the path to your web app project, defaults to the repository root
-  NODE_VERSION: '16.x'                # set this to the node version to use
+  AZURE_WEBAPP_NAME: ms-echo # set this to your application's name
+  AZURE_WEBAPP_PACKAGE_PATH: "." # set this to the path to your web app project, defaults to the repository root
+  NODE_VERSION: "16.x" # set this to the node version to use
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
 
@@ -14,41 +14,41 @@ jobs:
   UnitTests:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
-    - name: Set up Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: ${{ env.NODE_VERSION }}
-        cache: 'npm'
-    
-    - name: Download dependencies
-      run: npm i 
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: "npm"
 
-    - name: Run Test
-      run: npm run test 
+      - name: Download dependencies
+        run: npm i
+
+      - name: Run Test
+        run: npm run test
   SAST:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
-    - name: Set up Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: ${{ env.NODE_VERSION }}
-        cache: 'npm'
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: "npm"
 
-    # Initializes the CodeQL tools for scanning.
-    - name: Initialize CodeQL
-      uses: github/codeql-action/init@v2
-      with:
+      # Initializes the CodeQL tools for scanning.
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v2
+        with:
           languages: javascript
-      
-    - name: Download dependencies
-      run: npm i 
-    
-    - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@v2
+
+      - name: Download dependencies
+        run: npm i
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v2
 
   build-and-push-image:
     runs-on: ubuntu-latest
@@ -85,16 +85,21 @@ jobs:
   Dispatch:
     needs: [build-and-push-image]
     runs-on: ubuntu-latest
-    permissions: write-all
-    steps:  
-    - name: Repository Dispatch
-      uses: peter-evans/repository-dispatch@v2
+    steps:
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
 
-      with:
-        token: ${{ secrets.REPO_ACCESS_TOKEN }}
-        repository: bankwing/azure-cd-node-webapp-container
-        event-type: my-event
-        client-payload: '{"appname": "${{ env.AZURE_WEBAPP_NAME }}" ,"imagename": "${{ env.IMAGE_NAME }}", "imagetag": "${{ steps.meta.outputs.tags }}"}'
+      - name: Repository Dispatch
+        uses: peter-evans/repository-dispatch@v2
+
+        with:
+          token: ${{ secrets.REPO_ACCESS_TOKEN }}
+          repository: bankwing/azure-cd-node-webapp-container
+          event-type: my-event
+          client-payload: '{"appname": "${{ env.AZURE_WEBAPP_NAME }}" ,"imagename": "${{ env.IMAGE_NAME }}", "imagetag": "${{ steps.meta.outputs.tags }}"}'
   # sca:
   #   runs-on: ubuntu-latest
   #   steps:
@@ -107,7 +112,7 @@ jobs:
   #       cache: 'npm'
 
   #   - name: Download dependencies
-  #     run: npm i 
+  #     run: npm i
 
   #   - name: Depcheck
   #     uses: dependency-check/Dependency-Check_Action@main
@@ -120,7 +125,7 @@ jobs:
   #       args: >
   #         --failOnCVSS 7
   #         --enableRetired
-  #         --nodeAuditSkipDevDependencies 
+  #         --nodeAuditSkipDevDependencies
   #         --disableNodeAudit
   #   - name: Upload Test results
   #     uses: actions/upload-artifact@master
@@ -134,7 +139,7 @@ jobs:
   # Dispatch:
   #   needs: [sast, unittest]
   #   runs-on: ubuntu-latest
-  #   steps:  
+  #   steps:
   #   - name: Repository Dispatch
   #     uses: peter-evans/repository-dispatch@v2
 
