@@ -10,7 +10,7 @@ env:
   
 jobs:
   call-cd-workflow:
-    uses: bankwing/workflow-templates/.github/workflows/cd.yml@main
+    uses: bankwing/workflow-templates/.github/workflows/cd.yaml@main
     with:
       appname: ${{ env.AZURE_WEBAPP_NAME }}
       image-name: ${{ env.IMAGE_NAME }}
