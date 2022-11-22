@@ -1,4 +1,4 @@
-name: CD
+name: Call CD workflow
 
 on:
   workflow_dispatch:
@@ -9,7 +9,7 @@ env:
   IMAGE_NAME: ${{ github.repository }}
   
 jobs:
-  call-workflow-cd:
+  call-cd-workflow:
     uses: bankwing/workflow-templates/.github/workflows/cd.yml@main
     with:
       appname: ${{ env.AZURE_WEBAPP_NAME }}

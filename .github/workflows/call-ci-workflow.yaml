@@ -1,8 +1,8 @@
-name: Call a reusable workflow
+name: Call CI workflow
 
 on:
   workflow_dispatch:
 
 jobs:
-  call-workflow:
+  call-ci-workflow:
     uses: bankwing/workflow-templates/.github/workflows/compliance.yaml@main
