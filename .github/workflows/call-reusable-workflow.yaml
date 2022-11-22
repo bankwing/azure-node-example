@@ -5,4 +5,4 @@ on:
 
 jobs:
   call-workflow:
-    uses: bankwing/workflows/.github/workflows/compliance.yaml@main
+    uses: bankwing/workflow-templates/.github/workflows/compliance.yaml@main
