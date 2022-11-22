@@ -2,16 +2,16 @@ name: Call CD workflow
 
 on:
   workflow_dispatch:
-  
+
 env:
   AZURE_WEBAPP_NAME: ms-echo # set this to your application's name
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
-  
+
 jobs:
   call-cd-workflow:
     uses: bankwing/workflow-templates/.github/workflows/cd.yaml@main
     with:
       appname: ${{ env.AZURE_WEBAPP_NAME }}
-      imagename: ${{ env.IMAGE_NAME }}
-      imagetag: ${{ github.sha }}
+      image_name: ${{ env.IMAGE_NAME }}
+      image_tag: ${{ github.sha }}
