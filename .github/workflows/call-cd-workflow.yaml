@@ -13,5 +13,5 @@ jobs:
     uses: bankwing/workflow-templates/.github/workflows/cd.yaml@main
     with:
       appname: ${{ env.AZURE_WEBAPP_NAME }}
-      image-name: ${{ env.IMAGE_NAME }}
-      image-tag: ${{ github.sha }}
+      imagename: ${{ env.IMAGE_NAME }}
+      imagetag: ${{ github.sha }}
