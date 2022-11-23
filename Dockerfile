@@ -1,4 +1,4 @@
-FROM node:16-alpine AS build-env
+FROM node:16-alpine3.13 AS build-env
 COPY . /app
 WORKDIR /app
 
@@ -9,7 +9,7 @@ RUN npm ci --omit=dev
 # WORKDIR /app
 # CMD ["server.js"]
 
-FROM node:16-alpine
+FROM node:16-alpine3.13
 COPY --from=build-env /app /app
 WORKDIR /app
 USER node
