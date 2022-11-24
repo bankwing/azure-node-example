@@ -6,3 +6,5 @@ on:
 jobs:
   call-ci-workflow:
     uses: bankwing/workflow-templates/.github/workflows/container-scan.yaml@main
+    permissions: 
+      contents: write
