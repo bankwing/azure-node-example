@@ -8,3 +8,4 @@ jobs:
     uses: bankwing/workflow-templates/.github/workflows/container-scan.yaml@main
     permissions: 
       contents: write
+      checks: write
